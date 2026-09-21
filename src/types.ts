@@ -28,10 +28,20 @@ export interface ProductPreviewItem {
   tag: string;
   category: string;
   description?: string;
+  brandFocus?: string;
+  brandRole?: string;
+  colorPalette?: string[];
+  colorNames?: string[];
+  pantoneCodes?: string[];
+  typographyFont?: string;
+  artDirectionNotes?: string;
+  client?: string;
+  releaseYear?: string;
   details?: {
     material?: string;
     style?: string;
     edition?: string;
+    systemAsset?: string;
   };
 }
 

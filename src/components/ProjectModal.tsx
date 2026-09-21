@@ -144,15 +144,15 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             <div className="px-5 sm:px-7 py-3 bg-[#0a0d17] border-y border-white/10">
               <div className="flex items-center justify-between text-xs text-[#8f9bba] mb-2 font-medium">
                 <span className="flex items-center gap-1.5 font-bold text-white text-[11px] uppercase tracking-wider">
-                  <Layers className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Product Preview Imaging System (1.webp — 8.webp)</span>
+                  <Layers className="w-3.5 h-3.5 text-red-400" />
+                  <span>Brand Identity Deliverables (Plates 01 — 08)</span>
                 </span>
                 <span className="text-[11px] font-mono">
-                  {selectedProductIndex + 1} of {productItems.length}
+                  Plate {selectedProductIndex + 1} of {productItems.length}
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none py-1">
                 {productItems.map((prod, idx) => {
                   const isCurrent = idx === selectedProductIndex;
                   return (
@@ -163,12 +163,12 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                         setSelectedProductIndex(idx);
                         setIsZoomed(false);
                       }}
-                      className={`relative flex-shrink-0 w-14 sm:w-16 aspect-square rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                      className={`relative flex-shrink-0 w-14 sm:w-16 aspect-square rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer ${
                         isCurrent
-                          ? 'border-[#b91c1c] ring-2 ring-[#b91c1c]/40 scale-105 shadow-md shadow-red-600/30'
-                          : 'border-white/10 hover:border-white/30 opacity-70 hover:opacity-100'
+                          ? 'border-[3px] border-[#3b82f6] shadow-[0_0_16px_rgba(59,130,246,0.6)] ring-2 ring-blue-500/30 scale-105'
+                          : 'border border-white/10 hover:border-[#3b82f6]/80 hover:shadow-[0_0_12px_rgba(59,130,246,0.4)] opacity-75 hover:opacity-100'
                       }`}
-                      title={`${prod.name} (${prod.number}.webp)`}
+                      title={`${prod.name} (${prod.number})`}
                     >
                       <img
                         src={prod.image}
@@ -178,8 +178,13 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
                         alt={prod.name}
                         className="w-full h-full object-cover"
                       />
-                      <span className={`absolute bottom-0.5 right-0.5 text-[9px] font-black px-1 rounded ${
-                        isCurrent ? 'bg-[#b91c1c] text-white' : 'bg-black/80 text-white/80'
+                      {/* Top-Right Indicator Dot */}
+                      {isCurrent && (
+                        <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-[#2563eb] ring-1.5 ring-white shadow-xs z-10" />
+                      )}
+                      {/* Bottom-Left Red Number Pill Badge */}
+                      <span className={`absolute bottom-1 left-1 px-1.5 py-0.2 rounded font-black text-[9px] tracking-tight ${
+                        isCurrent ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-black/80 text-white/80'
                       }`}>
                         {prod.number}
                       </span>
