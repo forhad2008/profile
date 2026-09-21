@@ -1,0 +1,222 @@
+import { NotificationItem, Project, Capability } from '../types';
+
+export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'notif-1',
+    title: 'Special Offer: 25% Off Design & Web Development',
+    message: 'Book a full brand identity, modern web interface, or AI integration project this month with a student-friendly celebration discount.',
+    category: 'offer',
+    offerCode: 'DIPLOMA25',
+    offerDiscount: '25% OFF',
+    linkUrl: 'mailto:abdullahpsychotic@gmail.com?subject=Inquiry%20with%20Code%20DIPLOMA25',
+    linkLabel: 'Claim 25% Offer ↗',
+    createdAt: 'Active today',
+    isRead: false,
+    isActive: true,
+    isPinned: true,
+  },
+  {
+    id: 'notif-2',
+    title: 'Visit My Other Website & GitHub Projects',
+    message: 'Check out my live experimental web apps, AI generative workflows, and design systems hosted directly on my GitHub Pages.',
+    category: 'website_link',
+    linkUrl: 'https://github.com/forhad-psychotic',
+    linkLabel: 'Open GitHub Projects ↗',
+    createdAt: '2 days ago',
+    isRead: false,
+    isActive: true,
+    isPinned: true,
+  },
+  {
+    id: 'notif-3',
+    title: 'New AI Generative Web App Deployed',
+    message: 'Just shipped an experimental prompt-to-UI component builder built with modern React and generative AI models.',
+    category: 'ai_tech',
+    linkUrl: 'https://github.com/forhad-psychotic',
+    linkLabel: 'Explore Source Code ↗',
+    createdAt: '3 days ago',
+    isRead: false,
+    isActive: true,
+  },
+  {
+    id: 'notif-4',
+    title: 'Available for Summer Design & Dev Commissions',
+    message: 'Balancing my diploma coursework with selected client projects. Fast turnaround on logos, vector graphics, and landing pages.',
+    category: 'announcement',
+    linkUrl: '#contact',
+    linkLabel: 'Send a Message ↓',
+    createdAt: '1 week ago',
+    isRead: true,
+    isActive: true,
+  }
+];
+
+export const PORTFOLIO_PROJECTS: Project[] = [
+  {
+    id: 'abdullah-psychotic',
+    title: 'Abdullah Psychotic',
+    tagline: 'A dark visual system built around identity, discipline and high-contrast typography.',
+    category: 'branding',
+    categoryLabel: 'Brand Identity & Web',
+    imageUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1800&q=88',
+    featured: true,
+    searchTags: ['branding', 'dark mode', 'identity', 'fashion', 'web design', 'psychotic', 'editorial'],
+    description: 'A comprehensive brand identity and digital experience crafted for a forward-thinking streetwear and visual art initiative.',
+    fullCaseStudy: {
+      clientOrContext: 'Independent Brand & Creative Lab',
+      role: 'Lead Art Director, Brand Designer & Front-End Developer',
+      timeline: '6 Weeks (Design & Implementation)',
+      tools: ['Adobe Illustrator', 'Figma', 'React', 'Tailwind CSS', 'Motion'],
+      challenge: 'Creating a rebellious yet surgically refined aesthetic that balances raw editorial tension with fluid web responsiveness.',
+      solution: 'Developed custom display letterforms, an austere monochrome color palette with surgical cobalt blue highlights, and a micro-animated portfolio experience.',
+      metrics: '350+ brand assets generated, 99 Lighthouse performance score.',
+      demoUrl: 'https://github.com/forhad-psychotic',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  },
+  {
+    id: 'neural-canvas-ai',
+    title: 'NeuralCanvas AI Studio',
+    tagline: 'Generative AI interface uniting prompt-driven canvas composition with real-time parameter tweaking.',
+    category: 'web_ai',
+    categoryLabel: 'AI Technologist & Web App',
+    imageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1400&q=88',
+    featured: false,
+    searchTags: ['ai', 'generative', 'web app', 'machine learning', 'react', 'tailwind', 'canvas'],
+    description: 'An AI-powered design assistant created to accelerate vector poster layouts and style exploration for creative professionals.',
+    fullCaseStudy: {
+      clientOrContext: 'Diploma Finalist Innovation Showcase',
+      role: 'Full-Stack Developer & AI Systems Architect',
+      timeline: '4 Weeks',
+      tools: ['React 19', 'TypeScript', 'Gemini API / LLM', 'Tailwind CSS', 'HTML5 Canvas'],
+      challenge: 'Translating fuzzy creative briefs from non-technical clients into structured prompt sequences and usable visual outputs.',
+      solution: 'Constructed an adaptive interface that interprets natural language descriptions into aesthetic style matrices, generating downloadable SVG and color tokens.',
+      metrics: 'Under 1.2s roundtrip generation time; automated palette extraction.',
+      demoUrl: 'https://github.com/forhad-psychotic',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  },
+  {
+    id: 'digital-portfolio-system',
+    title: 'NeoEditorial Portfolio',
+    tagline: 'Modern responsive architecture blending editorial magazine layout rhythm with snappy client-side state.',
+    category: 'web_ai',
+    categoryLabel: 'Web UI / Development',
+    imageUrl: 'https://images.unsplash.com/photo-1559028012-481c04fa702d?auto=format&fit=crop&w=1400&q=88',
+    featured: false,
+    searchTags: ['web', 'portfolio', 'ui', 'ux', 'responsive', 'javascript', 'react'],
+    description: 'Fluid web application utilizing modern component architecture, dynamic notification streams, and mobile app-like tactile feel.',
+    fullCaseStudy: {
+      clientOrContext: 'Personal Flagship Project',
+      role: 'Sole Designer & Engineer',
+      timeline: 'Ongoing Evolution',
+      tools: ['React', 'TypeScript', 'Tailwind CSS', 'Motion'],
+      challenge: 'Unifying mobile-first handheld tactile controls with expansive desktop widescreen typography.',
+      solution: 'Engineered a dual-mode layout that transitions effortlessly from a floating mobile dock to a high-end desktop editorial masthead with live notifications.',
+      metrics: 'Zero layout shift (CLS 0.0), 100% accessible contrast ratios.',
+      demoUrl: '#home',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  },
+  {
+    id: 'visual-poster-collection',
+    title: 'Kinetic Poster Studies',
+    tagline: 'Experimental geometric compositions exploring brutalist grid systems, typography, and optical illusions.',
+    category: 'graphics',
+    categoryLabel: 'Graphic Design',
+    imageUrl: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1400&q=88',
+    featured: false,
+    searchTags: ['graphics', 'poster', 'print', 'geometry', 'vector', 'composition'],
+    description: 'A continuous archive of vector posters and visual experiments dissecting form, scale, and typographic tension.',
+    fullCaseStudy: {
+      clientOrContext: 'Self-Initiated Design Research',
+      role: 'Graphic Designer & Typographer',
+      timeline: 'Seasonal Series (12+ Editions)',
+      tools: ['Adobe Illustrator', 'Photoshop', 'Generative Scripting'],
+      challenge: 'Challenging standard commercial layout norms through asymmetric weight and intentional negative space.',
+      solution: 'Produced a cohesive 12-piece print and screen series featured across international digital design communities.',
+      metrics: 'Over 14,000 views across Behance and design forums.',
+      demoUrl: 'https://behance.net',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  },
+  {
+    id: 'experimental-typeface',
+    title: 'Synthetix Display Type',
+    tagline: 'Custom modular typeface forged for high-impact headlines, packaging, and digital branding.',
+    category: 'typography',
+    categoryLabel: 'Typography & Form',
+    imageUrl: 'https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=1400&q=88',
+    featured: false,
+    searchTags: ['typography', 'font', 'lettering', 'type design', 'display font'],
+    description: 'A radical geometric display font designed with sharp angular terminals and hyper-condensed counterspaces.',
+    fullCaseStudy: {
+      clientOrContext: 'Type Foundry Exploration',
+      role: 'Type Designer',
+      timeline: '8 Weeks',
+      tools: ['Glyphs', 'Illustrator', 'OpenType Features'],
+      challenge: 'Balancing extreme visual personality with legibility at display scales on both dark and light digital surfaces.',
+      solution: 'Engineered full uppercase, figures, mathematical symbols, and ligatures with specialized optical adjustments for screen rendering.',
+      metrics: 'Standard OpenType format; tested across 24 print and screen sizes.',
+      demoUrl: 'https://github.com/forhad-psychotic',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  },
+  {
+    id: 'ai-creative-copilot',
+    title: 'Aura Intelligence Agent',
+    tagline: 'Autonomous AI workflow tool connecting generative reasoning with live visual asset production.',
+    category: 'web_ai',
+    categoryLabel: 'AI Technologist',
+    imageUrl: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1400&q=88',
+    featured: false,
+    searchTags: ['ai', 'agent', 'automation', 'llm', 'technologist', 'fullstack'],
+    description: 'An AI-powered creative engine that autonomously researches design references, synthesizes color tokens, and suggests UI wireframes.',
+    fullCaseStudy: {
+      clientOrContext: 'Engineering Diploma Project Lab',
+      role: 'AI Technologist & Core Architect',
+      timeline: '5 Weeks',
+      tools: ['TypeScript', 'Gemini Models', 'Node.js', 'Vite', 'Tailwind'],
+      challenge: 'Reducing the gap between creative ideation and technical code generation for front-end developers.',
+      solution: 'Implemented structured tool-calling architecture enabling the model to output verified Tailwind CSS mockups and color harmonics.',
+      metrics: '4x faster early mockup turnaround during testing phase.',
+      demoUrl: 'https://github.com/forhad-psychotic',
+      githubUrl: 'https://github.com/forhad-psychotic',
+    }
+  }
+];
+
+export const CAPABILITIES: Capability[] = [
+  {
+    number: '01',
+    title: 'Brand Identity & Systems',
+    subtitle: 'Graphic Design & Art Direction',
+    description: 'Cohesive visual ecosystems: logos, custom typography, brand guidelines, stationery, and memorable digital assets that define distinct personas.',
+    tags: ['Brand Guidelines', 'Logo Design', 'Art Direction', 'Vector Systems'],
+    iconName: 'Sparkles'
+  },
+  {
+    number: '02',
+    title: 'Modern Web Development',
+    subtitle: 'Front-End & UI Engineering',
+    description: 'Blazing fast, responsive web applications built with React, TypeScript, and modern styling. Flawless on both handheld smartphones and 4K displays.',
+    tags: ['React 19', 'TypeScript', 'Tailwind CSS', 'Responsive UI', 'State Flow'],
+    iconName: 'Code'
+  },
+  {
+    number: '03',
+    title: 'AI Technology & Generative Systems',
+    subtitle: 'Applied AI & Creative Automation',
+    description: 'Integrating cutting-edge LLMs and multimodal AI into digital products. Prompt orchestration, automated design workflows, and smart interfaces.',
+    tags: ['Gemini / LLM Integration', 'Prompt Engineering', 'Generative UI', 'Creative Tech'],
+    iconName: 'Bot'
+  },
+  {
+    number: '04',
+    title: 'Typography & Editorial Graphics',
+    subtitle: 'Form, Scale & Visual Tension',
+    description: 'Poster designs, experimental display typefaces, editorial magazines, and social campaign graphics that arrest attention through disciplined composition.',
+    tags: ['Display Type', 'Editorial Layouts', 'Print & Digital Posters', 'Color Theory'],
+    iconName: 'Type'
+  }
+];
