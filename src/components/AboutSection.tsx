@@ -1,22 +1,18 @@
 import React from 'react';
 import { useProfile, FALLBACK_PORTRAIT } from '../context/ProfileContext';
-import { GraduationCap, Code2, Sparkles, Palette, CheckCircle, Terminal, Camera } from 'lucide-react';
+import { GraduationCap, Code2, Sparkles, Palette, CheckCircle, Terminal } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
-  const { portraitUrl, setIsPhotoModalOpen } = useProfile();
+  const { portraitUrl } = useProfile();
 
   return (
     <section id="about" className="py-16 sm:py-24 border-b border-[#e3e6ec] dark:border-white/10 bg-white dark:bg-[#0b0f19] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           
-          {/* Left Column: Real Portrait & Creative Badge (5 cols) */}
+          {/* Left Column: Portrait & Creative Badge (5 cols) */}
           <div className="lg:col-span-5">
-            <div 
-              onClick={() => setIsPhotoModalOpen(true)}
-              className="relative rounded-[32px] sm:rounded-[38px] overflow-hidden bg-[#111522] aspect-[4/5] shadow-2xl border border-[#e3e6ec] dark:border-white/10 group cursor-pointer"
-              title="Click to view or change real photo (2.jpg)"
-            >
+            <div className="relative rounded-[32px] sm:rounded-[38px] overflow-hidden bg-[#111522] aspect-[4/5] shadow-2xl border border-[#e3e6ec] dark:border-white/10 group">
               <img
                 src={portraitUrl}
                 onError={(e) => {
@@ -26,21 +22,6 @@ export const AboutSection: React.FC = () => {
                 className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d16] via-[#0a0d16]/20 to-transparent opacity-80" />
-
-              {/* Top photo edit pill */}
-              <div className="absolute top-5 right-5 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsPhotoModalOpen(true);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 text-white text-xs font-bold backdrop-blur-md border border-white/20 hover:bg-black/80 transition-all cursor-pointer"
-                >
-                  <Camera className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Update 2.jpg</span>
-                </button>
-              </div>
 
               {/* Status pill on photo */}
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between z-10">

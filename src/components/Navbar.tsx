@@ -3,8 +3,8 @@ import { useNotifications } from '../context/NotificationContext';
 import { useTheme } from '../context/ThemeContext';
 import { useProfile, FALLBACK_AVATAR } from '../context/ProfileContext';
 import { 
-  Bell, ArrowUpRight, ShieldCheck, CheckCircle2, 
-  Sun, Moon, GraduationCap, Sparkles, Camera 
+  Bell, ArrowUpRight, CheckCircle2, 
+  Sun, Moon, GraduationCap, Sparkles 
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -13,9 +13,9 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) => {
-  const { unreadCount, isDrawerOpen, setIsDrawerOpen, isAdminView, setIsAdminView } = useNotifications();
+  const { unreadCount, isDrawerOpen, setIsDrawerOpen } = useNotifications();
   const { theme, toggleTheme } = useTheme();
-  const { avatarUrl, setIsPhotoModalOpen } = useProfile();
+  const { avatarUrl } = useProfile();
 
   const [greeting, setGreeting] = useState('Good Day,');
 
@@ -34,12 +34,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-3">
             {/* Circular Avatar with signature cyan-to-purple gradient border */}
-            <div 
-              onClick={() => setIsPhotoModalOpen(true)}
-              className="relative group cursor-pointer"
-              title="Click to update or view real photo (logo.png)"
-            >
-              <div className="w-11 h-11 rounded-full p-[2.5px] bg-gradient-to-tr from-[#2998d5] via-[#3b82f6] to-[#7c3aed] shadow-md shadow-[#3946f4]/25 group-hover:scale-105 transition-transform flex items-center justify-center">
+            <div className="relative">
+              <div className="w-11 h-11 rounded-full p-[2.5px] bg-gradient-to-tr from-[#2998d5] via-[#3b82f6] to-[#7c3aed] shadow-md shadow-[#3946f4]/25 flex items-center justify-center">
                 <img
                   src={avatarUrl}
                   onError={(e) => {
@@ -50,18 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
                 />
               </div>
               <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0a0d16]" />
-              
-              {/* Quick camera overlay on hover */}
-              <div className="absolute inset-0 rounded-full bg-black/40 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="w-3.5 h-3.5" />
-              </div>
             </div>
 
             <a
               href="#home"
-              onClick={() => {
-                if (isAdminView) setIsAdminView(false);
-              }}
               className="group focus:outline-none"
             >
               <span className="text-[11px] font-medium text-[#717888] dark:text-[#94a3b8] block leading-tight">
@@ -85,35 +73,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
         <nav className="hidden md:flex items-center gap-1 bg-[#f1f3f7] dark:bg-white/5 p-1.5 rounded-2xl border border-[#e3e6ec]/80 dark:border-white/10">
           <a
             href="#home"
-            onClick={() => isAdminView && setIsAdminView(false)}
             className="px-4 py-2 rounded-xl text-xs font-bold text-[#737a8a] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
           >
             Home
           </a>
           <a
             href="#work"
-            onClick={() => isAdminView && setIsAdminView(false)}
             className="px-4 py-2 rounded-xl text-xs font-bold text-[#737a8a] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
           >
             Work
           </a>
           <a
             href="#about"
-            onClick={() => isAdminView && setIsAdminView(false)}
             className="px-4 py-2 rounded-xl text-xs font-bold text-[#737a8a] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
           >
             About
           </a>
           <a
             href="#services"
-            onClick={() => isAdminView && setIsAdminView(false)}
             className="px-4 py-2 rounded-xl text-xs font-bold text-[#737a8a] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
           >
             Capabilities
           </a>
           <a
             href="#contact"
-            onClick={() => isAdminView && setIsAdminView(false)}
             className="px-4 py-2 rounded-xl text-xs font-bold text-[#737a8a] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white hover:bg-white dark:hover:bg-white/10 transition-all"
           >
             Contact
@@ -156,20 +139,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
             {unreadCount > 0 && (
               <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-[#0a0d16] animate-pulse" />
             )}
-          </button>
-
-          {/* Admin Management View Shortcut Button */}
-          <button
-            onClick={() => setIsAdminView(!isAdminView)}
-            className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
-              isAdminView
-                ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
-                : 'bg-white dark:bg-white/5 text-[#717888] dark:text-[#94a3b8] border-[#e3e6ec] dark:border-white/10 hover:border-amber-400 hover:text-amber-600 dark:hover:text-amber-400'
-            }`}
-            title="Private Admin Management Link & Portal"
-          >
-            <ShieldCheck className="w-4 h-4" />
-            <span>{isAdminView ? 'Exit' : 'Admin'}</span>
           </button>
 
           {/* Let's Talk CTA */}

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useNotifications } from '../context/NotificationContext';
 import { useTheme } from '../context/ThemeContext';
-import { useProfile, FALLBACK_AVATAR } from '../context/ProfileContext';
 import { NotificationCategory, NotificationItem } from '../types';
 import { 
   ShieldCheck, PlusCircle, Globe, Sparkles, Cpu, Megaphone, 
   ExternalLink, Copy, Check, Trash2, ArrowLeft, RefreshCw, 
   Code, Eye, Send, Lock, Unlock, HelpCircle, CheckCircle2, Bookmark,
-  Sun, Moon, Camera
+  Sun, Moon
 } from 'lucide-react';
 
 interface NotificationManagerProps {
@@ -16,7 +15,6 @@ interface NotificationManagerProps {
 
 export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShowToast }) => {
   const { theme, toggleTheme } = useTheme();
-  const { avatarUrl, setIsPhotoModalOpen } = useProfile();
   const {
     notifications,
     addNotification,
@@ -38,6 +36,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
   const [category, setCategory] = useState<NotificationCategory>('offer');
   const [linkUrl, setLinkUrl] = useState('');
   const [linkLabel, setLinkLabel] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [offerCode, setOfferCode] = useState('');
   const [offerDiscount, setOfferDiscount] = useState('');
   const [isPinned, setIsPinned] = useState(true);
@@ -61,6 +60,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
       category,
       linkUrl: linkUrl.trim() || undefined,
       linkLabel: linkLabel.trim() || undefined,
+      imageUrl: imageUrl.trim() || undefined,
       offerCode: offerCode.trim() || undefined,
       offerDiscount: offerDiscount.trim() || undefined,
       isPinned,
@@ -73,6 +73,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
     setMessage('');
     setLinkUrl('');
     setLinkLabel('');
+    setImageUrl('');
     setOfferCode('');
     setOfferDiscount('');
   };
@@ -111,7 +112,10 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setIsAdminView(false)}
+              onClick={() => {
+                setIsAdminView(false);
+                window.history.pushState({}, '', window.location.pathname);
+              }}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#717888] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white bg-[#f1f3f7] dark:bg-white/10 hover:bg-[#e4e7ee] dark:hover:bg-white/15 px-3 py-2 rounded-xl transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
@@ -136,25 +140,6 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Real Photos Quick Button */}
-            <button
-              onClick={() => setIsPhotoModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#f1f3f7] dark:bg-white/10 hover:bg-[#e4e7ee] dark:hover:bg-white/20 text-[#111522] dark:text-white border border-[#e3e6ec] dark:border-white/15 transition-all cursor-pointer"
-              title="Manage Real Profile Photos (logo.png & 2.jpg)"
-            >
-              <div className="w-5 h-5 rounded-full p-[1px] bg-gradient-to-tr from-[#2998d5] via-[#3b82f6] to-[#7c3aed] flex items-center justify-center overflow-hidden">
-                <img
-                  src={avatarUrl}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = FALLBACK_AVATAR;
-                  }}
-                  alt="Avatar"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
-              <span className="hidden sm:inline">Real Photos</span>
-            </button>
-
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
@@ -171,6 +156,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
             <button
               onClick={() => {
                 setIsAdminView(false);
+                window.history.pushState({}, '', window.location.pathname);
                 setIsDrawerOpen(true);
               }}
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#3946f4] text-white hover:bg-[#2834d6] shadow-sm transition-all cursor-pointer"
@@ -199,7 +185,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                 Your Secret Management Link
               </h2>
               <p className="text-xs sm:text-sm text-[#a3abbd] leading-relaxed">
-                Bookmark this private URL on your phone or computer. Only you can access this notification management panel and push live offers or another website link to the main portfolio.
+                Bookmark this private URL on your phone or computer (<code className="text-amber-300 font-mono text-[11px] bg-white/10 px-1.5 py-0.5 rounded">/#admin</code>). There are zero links or buttons to this panel on your public portfolio, keeping it completely private for you.
               </p>
             </div>
 
@@ -367,17 +353,17 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-[#111522] dark:text-white mb-1">
-                    Target Website / GitHub Link
+                    Target Website / WhatsApp / Social Link
                   </label>
                   <input
                     type="text"
                     value={linkUrl}
                     onChange={(e) => setLinkUrl(e.target.value)}
-                    placeholder="https://forhad.github.io/my-other-project"
+                    placeholder="https://wa.me/8801342900364 or https://facebook.com/..."
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#e3e6ec] dark:border-white/15 text-xs focus:outline-none focus:border-[#3946f4] dark:focus:border-indigo-500 focus:ring-2 focus:ring-[#3946f4]/15 transition-all bg-[#fafbfc] dark:bg-white/5 text-[#111522] dark:text-white"
                   />
                   <span className="text-[10px] text-[#8b92a1] dark:text-[#64748b] mt-0.5 block">
-                    Link to your another website, GitHub repo, or Behance
+                    WhatsApp chat link, Facebook profile, or GitHub link
                   </span>
                 </div>
 
@@ -389,13 +375,27 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                     type="text"
                     value={linkLabel}
                     onChange={(e) => setLinkLabel(e.target.value)}
-                    placeholder="e.g. Visit My Other Site ↗"
+                    placeholder="e.g. Chat on WhatsApp ↗ or View Profile ↗"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[#e3e6ec] dark:border-white/15 text-xs focus:outline-none focus:border-[#3946f4] dark:focus:border-indigo-500 focus:ring-2 focus:ring-[#3946f4]/15 transition-all bg-[#fafbfc] dark:bg-white/5 text-[#111522] dark:text-white"
                   />
                   <span className="text-[10px] text-[#8b92a1] dark:text-[#64748b] mt-0.5 block">
                     Label displayed on the notification card button
                   </span>
                 </div>
+              </div>
+
+              {/* Optional Image URL */}
+              <div>
+                <label className="block text-xs font-bold text-[#111522] dark:text-white mb-1">
+                  Card Image URL (Optional - e.g. for travel, photos, or project banners)
+                </label>
+                <input
+                  type="text"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="https://images.unsplash.com/... or /2.jpg"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#e3e6ec] dark:border-white/15 text-xs focus:outline-none focus:border-[#3946f4] dark:focus:border-indigo-500 transition-all bg-[#fafbfc] dark:bg-white/5 text-[#111522] dark:text-white"
+                />
               </div>
 
               {/* Offer Discount & Promo Code (Optional) */}
@@ -497,6 +497,16 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                 <p className="mt-1 text-xs text-[#5f687a] dark:text-[#94a3b8] leading-relaxed">
                   {message || 'Type your message in the form on the left to see how it looks to your visitors.'}
                 </p>
+
+                {imageUrl && (
+                  <div className="mt-2.5 rounded-xl overflow-hidden aspect-[16/9] border border-[#e3e6ec] dark:border-white/10 relative">
+                    <img
+                      src={imageUrl}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
 
                 {offerCode && (
                   <div className="mt-2.5 flex items-center gap-2 bg-[#fffbeb] dark:bg-amber-950/30 p-2 rounded-xl border border-amber-200 dark:border-amber-800/40 text-xs">
@@ -667,6 +677,12 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                   <p className="text-xs text-[#5f687a] dark:text-[#94a3b8] max-w-2xl">
                     {item.message}
                   </p>
+
+                  {item.imageUrl && (
+                    <div className="mt-2 w-32 h-16 rounded-lg overflow-hidden border border-[#e3e6ec] dark:border-white/10">
+                      <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                    </div>
+                  )}
 
                   {item.linkUrl && (
                     <div className="text-[11px] text-[#3946f4] dark:text-indigo-400 font-mono-tech flex items-center gap-1 mt-1">

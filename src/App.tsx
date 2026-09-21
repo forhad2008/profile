@@ -10,8 +10,6 @@ import { ServicesSection } from './components/ServicesSection';
 import { ContactSection } from './components/ContactSection';
 import { NotificationDrawer } from './components/NotificationDrawer';
 import { NotificationManager } from './components/NotificationManager';
-import { PhotoManagerModal } from './components/PhotoManagerModal';
-import { QuickPhotoBanner } from './components/QuickPhotoBanner';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { Toast } from './components/Toast';
 
@@ -61,9 +59,6 @@ const AppContent: React.FC = () => {
             <div className="absolute bottom-10 left-1/4 w-96 h-96 bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-3xl" />
           </div>
 
-          {/* Quick Real Photo Sync Banner */}
-          <QuickPhotoBanner onShowToast={showToast} />
-
           {/* Navigation Bar */}
           <Navbar 
             onOpenContact={() => scrollToSection('contact')} 
@@ -95,9 +90,6 @@ const AppContent: React.FC = () => {
 
       {/* Global Feedback Toast */}
       <Toast message={toastMessage} />
-
-      {/* Real Photos & Identity Management Modal */}
-      <PhotoManagerModal onShowToast={showToast} />
     </div>
   );
 };

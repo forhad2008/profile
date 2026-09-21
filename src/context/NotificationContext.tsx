@@ -26,7 +26,7 @@ interface NotificationContextType {
   getAdminLink: () => string;
 }
 
-const STORAGE_KEY = 'abdullah_portfolio_notifications_v2';
+const STORAGE_KEY = 'abdullah_portfolio_notifications_v3';
 const GITHUB_URL_KEY = 'abdullah_portfolio_github_feed_url';
 const ADMIN_SECRET = 'abdullah-forhad-secret';
 
@@ -61,24 +61,33 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [isSyncing, setIsSyncing] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
 
-  // Check URL parameters or hash on initial mount for admin access
+  // Check URL parameters, hash, or pathname on mount & route change for dedicated admin page
   useEffect(() => {
     const checkAdminAccess = () => {
       const params = new URLSearchParams(window.location.search);
-      const hash = window.location.hash;
-      if (
+      const hash = window.location.hash.toLowerCase();
+      const pathname = window.location.pathname.toLowerCase();
+
+      const isDedicatedAdminRoute = 
+        pathname.endsWith('/admin') ||
+        pathname.endsWith('/admin.html') ||
         params.get('admin') === 'true' || 
         params.get('access') === 'abdullah' || 
         params.get('key') === ADMIN_SECRET ||
         hash === '#admin' ||
-        hash === '#management'
-      ) {
-        setIsAdminView(true);
-      }
+        hash === '#/admin' ||
+        hash === '#management';
+
+      setIsAdminView(isDedicatedAdminRoute);
     };
+
     checkAdminAccess();
     window.addEventListener('hashchange', checkAdminAccess);
-    return () => window.removeEventListener('hashchange', checkAdminAccess);
+    window.addEventListener('popstate', checkAdminAccess);
+    return () => {
+      window.removeEventListener('hashchange', checkAdminAccess);
+      window.removeEventListener('popstate', checkAdminAccess);
+    };
   }, []);
 
   // Save notifications to localStorage whenever changed
@@ -200,8 +209,8 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
   };
 
   const getAdminLink = () => {
-    const baseUrl = window.location.origin + window.location.pathname;
-    return `${baseUrl}?admin=true&key=${ADMIN_SECRET}`;
+    const origin = window.location.origin;
+    return `${origin}/#admin`;
   };
 
   return (

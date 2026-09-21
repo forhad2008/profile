@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useNotifications } from '../context/NotificationContext';
-import { Mail, ArrowUpRight, Copy, Check, Github, Send, ShieldCheck, Heart } from 'lucide-react';
+import { Mail, ArrowUpRight, Copy, Check, Github, Send, Heart } from 'lucide-react';
 
 interface ContactSectionProps {
   onShowToast: (msg: string) => void;
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ onShowToast }) => {
-  const { setIsAdminView } = useNotifications();
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -223,20 +221,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onShowToast }) =
 
         </div>
 
-        {/* Footer info & Admin secret entrance */}
+        {/* Footer info */}
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
           <div>
             © 2026 Abdullah Forhad · Graphic Designer, Web Developer & AI Technologist.
           </div>
 
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsAdminView(true)}
-              className="inline-flex items-center gap-1 text-white/50 hover:text-amber-400 transition-colors cursor-pointer text-[11px]"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Abdullah's Private Management Portal</span>
-            </button>
+            <span className="text-white/40">Portfolio & Creative Practice</span>
           </div>
         </div>
 

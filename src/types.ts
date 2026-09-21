@@ -7,6 +7,7 @@ export interface NotificationItem {
   category: NotificationCategory;
   linkUrl?: string;
   linkLabel?: string;
+  imageUrl?: string;
   offerCode?: string;
   offerDiscount?: string;
   createdAt: string;

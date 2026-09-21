@@ -1,0 +1,43 @@
+[
+  {
+    "id": "offer-whatsapp-1",
+    "title": "Special Offer: 30% Off Brand Identity & Web Development",
+    "message": "Get a custom-crafted visual identity system, high-speed responsive website, or AI integration at an exclusive rate. Chat directly on WhatsApp to get started.",
+    "category": "offer",
+    "offerCode": "WHATSAPP30",
+    "offerDiscount": "30% OFF",
+    "linkUrl": "https://wa.me/8801342900364?text=Hello%20Abdullah%2C%20I%20saw%20your%20portfolio%20offer%20(WHATSAPP30)%20and%20would%20like%20to%20discuss%20a%20project!",
+    "linkLabel": "Chat on WhatsApp ↗",
+    "createdAt": "Active today",
+    "isRead": false,
+    "isActive": true,
+    "isPinned": true
+  },
+  {
+    "id": "offer-whatsapp-2",
+    "title": "Quick Consultation & Sprint Offer: 20% Off UI/UX",
+    "message": "Need a fast turnaround on website redesign, Figma wireframes, or landing page optimization? Connect with me directly on WhatsApp.",
+    "category": "offer",
+    "offerCode": "SPRINT20",
+    "offerDiscount": "20% OFF",
+    "linkUrl": "https://wa.me/8801342900364?text=Hi%20Abdullah%2C%20I%27d%20like%20to%20book%20a%20project%20consultation%20with%20your%20SPRINT20%20offer.",
+    "linkLabel": "Message on WhatsApp ↗",
+    "createdAt": "Active today",
+    "isRead": false,
+    "isActive": true,
+    "isPinned": true
+  },
+  {
+    "id": "social-facebook-travel",
+    "title": "Connect & Travel Stories on Facebook",
+    "message": "Explore my journey, creative behind-the-scenes, and travel adventures. Follow and connect with me directly on my Facebook profile.",
+    "category": "website_link",
+    "linkUrl": "https://www.facebook.com/profile.php?id=61580779565120",
+    "linkLabel": "View Facebook Profile ↗",
+    "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&h=600&q=80",
+    "createdAt": "Featured",
+    "isRead": false,
+    "isActive": true,
+    "isPinned": true
+  }
+]

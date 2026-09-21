@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNotifications } from '../context/NotificationContext';
-import { useProfile, FALLBACK_PORTRAIT, FALLBACK_AVATAR } from '../context/ProfileContext';
-import { ArrowUpRight, ArrowDown, Bell, Sparkles, GraduationCap, Camera, User, RefreshCw } from 'lucide-react';
+import { useProfile, FALLBACK_PORTRAIT } from '../context/ProfileContext';
+import { ArrowUpRight, ArrowDown, Bell, Sparkles, GraduationCap, User, RefreshCw } from 'lucide-react';
 
 interface HeroProps {
   onExploreWork: () => void;
@@ -10,7 +10,7 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onExploreWork, onAboutClick }) => {
   const { unreadCount, setIsDrawerOpen } = useNotifications();
-  const { portraitUrl, avatarUrl, setIsPhotoModalOpen } = useProfile();
+  const { portraitUrl } = useProfile();
   const [heroCardMode, setHeroCardMode] = useState<'photo' | 'monogram'>('photo');
 
   return (
@@ -113,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWork, onAboutClick }) => {
                 }`}
               >
                 <User className="w-3.5 h-3.5" />
-                <span>Real Photo (2.jpg)</span>
+                <span>Portrait</span>
               </button>
 
               <button
@@ -142,7 +142,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWork, onAboutClick }) => {
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = FALLBACK_PORTRAIT;
                     }}
-                    alt="Abdullah Forhad - Real Portrait"
+                    alt="Abdullah Forhad - Portrait"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
                   
@@ -156,14 +156,9 @@ export const Hero: React.FC<HeroProps> = ({ onExploreWork, onAboutClick }) => {
                       <span>Abdullah Forhad</span>
                     </span>
 
-                    <button
-                      type="button"
-                      onClick={() => setIsPhotoModalOpen(true)}
-                      className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all cursor-pointer shadow-lg"
-                      title="Update or change real photo"
-                    >
-                      <Camera className="w-4 h-4 text-indigo-400" />
-                    </button>
+                    <span className="text-[10px] font-bold text-white/80 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15">
+                      Creative Lead
+                    </span>
                   </div>
 
                   {/* Bottom details on Photo */}

@@ -9,18 +9,15 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onNavClick, onOpenQuickContact }) => {
-  const { unreadCount, isDrawerOpen, setIsDrawerOpen, isAdminView, setIsAdminView } = useNotifications();
-  const { avatarUrl, setIsPhotoModalOpen } = useProfile();
+  const { unreadCount, isDrawerOpen, setIsDrawerOpen } = useNotifications();
+  const { avatarUrl } = useProfile();
 
   return (
     <div className="fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-md bg-[#0f1422]/90 dark:bg-[#0b0f19]/95 text-white backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl px-3 py-2 z-40 md:hidden flex items-center justify-between">
       
       {/* Home */}
       <button
-        onClick={() => {
-          if (isAdminView) setIsAdminView(false);
-          onNavClick('home');
-        }}
+        onClick={() => onNavClick('home')}
         className="flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-2xl text-[#818cf8] font-bold text-[10px] transition-colors"
       >
         <Home className="w-5 h-5" />
@@ -29,10 +26,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onNavClick, on
 
       {/* Explore / Work */}
       <button
-        onClick={() => {
-          if (isAdminView) setIsAdminView(false);
-          onNavClick('work');
-        }}
+        onClick={() => onNavClick('work')}
         className="flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-2xl text-white/60 hover:text-white font-medium text-[10px] transition-colors"
       >
         <Compass className="w-5 h-5" />
@@ -65,10 +59,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onNavClick, on
 
       {/* Profile / About with real avatar */}
       <button
-        onClick={() => {
-          if (isAdminView) setIsAdminView(false);
-          onNavClick('about');
-        }}
+        onClick={() => onNavClick('about')}
         className="flex flex-col items-center justify-center gap-1 py-1 px-2.5 rounded-2xl text-white/70 hover:text-white font-medium text-[10px] transition-colors group"
       >
         <div className="w-5 h-5 rounded-full p-[1px] bg-gradient-to-tr from-[#2998d5] via-[#3b82f6] to-[#7c3aed] flex items-center justify-center">

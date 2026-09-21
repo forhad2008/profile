@@ -3,7 +3,7 @@ import { useNotifications } from '../context/NotificationContext';
 import { NotificationCategory, NotificationItem } from '../types';
 import { 
   X, Bell, Sparkles, Globe, Cpu, Megaphone, 
-  ExternalLink, Copy, Check, RefreshCw, SlidersHorizontal, Trash2
+  ExternalLink, Copy, Check, RefreshCw, Trash2, MessageCircle
 } from 'lucide-react';
 
 interface NotificationDrawerProps {
@@ -23,7 +23,6 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onShowTo
     syncFromGithub,
     isSyncing,
     lastSyncTime,
-    setIsAdminView,
   } = useNotifications();
 
   const [activeTab, setActiveTab] = useState<'all' | NotificationCategory>('all');
@@ -274,6 +273,22 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onShowTo
                     {item.message}
                   </p>
 
+                  {/* Optional Image (e.g., for travel / featured links) */}
+                  {item.imageUrl && (
+                    <div className="mt-2.5 rounded-xl overflow-hidden aspect-[16/9] border border-[#e3e6ec] dark:border-white/10 relative">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                      <span className="absolute bottom-2 left-2 text-[10px] font-extrabold uppercase tracking-wider text-white bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md border border-white/20">
+                        Travel & Stories
+                      </span>
+                    </div>
+                  )}
+
                   {/* Offer Code Badge if available */}
                   {item.offerCode && (
                     <div className="mt-2.5 flex items-center gap-2 bg-[#fffbeb] dark:bg-amber-950/30 p-2 rounded-xl border border-amber-200 dark:border-amber-800/40">
@@ -318,10 +333,17 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onShowTo
                             setIsDrawerOpen(false);
                           }
                         }}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3946f4] dark:text-indigo-400 hover:underline transition-colors"
+                        className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl transition-all shadow-xs ${
+                          item.linkUrl.includes('wa.me')
+                            ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/20'
+                            : item.linkUrl.includes('facebook.com')
+                            ? 'bg-[#1877f2] hover:bg-[#166fe5] text-white shadow-blue-500/20'
+                            : 'text-[#3946f4] dark:text-indigo-400 hover:underline bg-[#e8eaff] dark:bg-indigo-500/15'
+                        }`}
                       >
+                        {item.linkUrl.includes('wa.me') && <MessageCircle className="w-3.5 h-3.5" />}
                         <span>{item.linkLabel || 'Explore Link ↗'}</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
+                        <ExternalLink className="w-3.5 h-3.5 opacity-80" />
                       </a>
                     ) : (
                       <span className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">Abdullah Forhad Feed</span>
@@ -347,32 +369,16 @@ export const NotificationDrawer: React.FC<NotificationDrawerProps> = ({ onShowTo
             )}
           </div>
 
-          {/* Drawer Footer: Admin Access & Feed Status */}
+          {/* Drawer Footer: Feed Status */}
           <div className="p-4 sm:p-5 border-t border-[#e3e6ec] dark:border-white/10 bg-[#fafbfc] dark:bg-[#0b0f19]">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[#717888] dark:text-[#94a3b8] text-[11px]">
-                  {lastSyncTime ? `Synced at ${lastSyncTime}` : 'Live Feed Active'}
+                  {lastSyncTime ? `Synced at ${lastSyncTime}` : 'Live Notifications Active'}
                 </span>
               </div>
-
-              {/* Secret Admin management link for Abdullah */}
-              <button
-                onClick={() => {
-                  setIsDrawerOpen(false);
-                  setIsAdminView(true);
-                }}
-                className="flex items-center gap-1.5 text-xs font-bold text-[#3946f4] dark:text-indigo-400 bg-[#e8eaff] dark:bg-indigo-500/15 hover:bg-[#d9ddff] dark:hover:bg-indigo-500/25 px-3 py-1.5 rounded-xl transition-colors cursor-pointer"
-              >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
-                <span>Manage Notifications</span>
-              </button>
             </div>
-            
-            <p className="mt-2 text-[10px] text-[#8b92a1] dark:text-[#64748b] text-center">
-              Add offers & website links via the private admin management portal or GitHub page.
-            </p>
           </div>
 
         </div>
