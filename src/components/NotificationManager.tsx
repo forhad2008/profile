@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNotifications } from '../context/NotificationContext';
 import { useTheme } from '../context/ThemeContext';
+import { useProfile, LOGO_IMAGE_PATH, BIG_IMAGE_PATH, FALLBACK_AVATAR, FALLBACK_PORTRAIT } from '../context/ProfileContext';
 import { NotificationCategory, NotificationItem } from '../types';
 import { 
   ShieldCheck, PlusCircle, Globe, Sparkles, Cpu, Megaphone, 
   ExternalLink, Copy, Check, Trash2, ArrowLeft, RefreshCw, 
   Code, Eye, Send, Lock, Unlock, HelpCircle, CheckCircle2, Bookmark,
-  Sun, Moon
+  Sun, Moon, Image as ImageIcon, Upload, RotateCcw, Camera, User, FileText
 } from 'lucide-react';
 
 interface NotificationManagerProps {
@@ -29,6 +30,19 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
     isSyncing,
     getAdminLink,
   } = useNotifications();
+
+  // Profile image management hook
+  const { 
+    avatarUrl, 
+    portraitUrl, 
+    setAvatarUrl, 
+    setPortraitUrl, 
+    resetProfileImages 
+  } = useProfile();
+
+  const [activeAdminTab, setActiveAdminTab] = useState<'notifications' | 'profile_photos'>('notifications');
+  const [customAvatarInput, setCustomAvatarInput] = useState('');
+  const [customPortraitInput, setCustomPortraitInput] = useState('');
 
   // Form state for creating a new notification/offer
   const [title, setTitle] = useState('');
@@ -102,6 +116,63 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
     setGithubFeedUrl(inputGithubUrl);
     const res = await syncFromGithub(inputGithubUrl);
     onShowToast(res.message);
+  };
+
+  const handleSaveAvatarUrl = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customAvatarInput.trim()) return;
+    setAvatarUrl(customAvatarInput.trim());
+    onShowToast('Avatar image URL updated and applied across website!');
+    setCustomAvatarInput('');
+  };
+
+  const handleSavePortraitUrl = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!customPortraitInput.trim()) return;
+    setPortraitUrl(customPortraitInput.trim());
+    onShowToast('Portrait photo URL updated and applied across website!');
+    setCustomPortraitInput('');
+  };
+
+  const handleAvatarFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        onShowToast('Image size is too large (max 5MB)');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setAvatarUrl(reader.result);
+          onShowToast('Avatar updated from uploaded photo!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handlePortraitFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 8 * 1024 * 1024) {
+        onShowToast('Image size is too large (max 8MB)');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setPortraitUrl(reader.result);
+          onShowToast('Portrait photo updated from uploaded photo!');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetProfileImages = () => {
+    resetProfileImages();
+    onShowToast('Profile images reset to original repository files (/logo.png & /2.jpg)!');
   };
 
   return (
@@ -210,8 +281,46 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
           </div>
         </div>
 
-        {/* 2-Column Workspace: Form & Live Preview on Left/Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Admin Navigation Tabs */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-[#e3e6ec] dark:border-white/10 pb-3">
+          <button
+            type="button"
+            onClick={() => setActiveAdminTab('notifications')}
+            className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeAdminTab === 'notifications'
+                ? 'bg-[#3946f4] text-white shadow-md shadow-indigo-500/25 ring-2 ring-indigo-500/20'
+                : 'bg-white dark:bg-white/5 text-[#717888] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white border border-[#e3e6ec] dark:border-white/10'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Offers & Notifications</span>
+            <span className="ml-1 text-[11px] px-2 py-0.5 rounded-full bg-white/20">
+              {notifications.length}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveAdminTab('profile_photos')}
+            className={`inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              activeAdminTab === 'profile_photos'
+                ? 'bg-[#3946f4] text-white shadow-md shadow-indigo-500/25 ring-2 ring-indigo-500/20'
+                : 'bg-white dark:bg-white/5 text-[#717888] dark:text-[#94a3b8] hover:text-[#111522] dark:hover:text-white border border-[#e3e6ec] dark:border-white/10'
+            }`}
+          >
+            <ImageIcon className="w-4 h-4" />
+            <span>Profile Photos & Visuals</span>
+            <span className="ml-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">
+              Active
+            </span>
+          </button>
+        </div>
+
+        {activeAdminTab === 'notifications' ? (
+          <>
+            {/* 2-Column Workspace: Form & Live Preview on Left/Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
           
           {/* Column 1: Create New Notification Form (7 cols) */}
           <div className="lg:col-span-7 bg-white dark:bg-[#0f1422] rounded-3xl p-6 sm:p-7 border border-[#e3e6ec] dark:border-white/10 shadow-sm">
@@ -726,8 +835,307 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
             ))}
           </div>
         </div>
+      </>
+    ) : (
+      /* Profile Photos & Visuals Management Tab */
+      <div className="space-y-6">
+        
+        {/* Banner with Reset Option */}
+        <div className="bg-white dark:bg-[#0f1422] rounded-3xl p-6 sm:p-7 border border-[#e3e6ec] dark:border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 bg-[#e8eaff] dark:bg-indigo-500/20 text-[#3946f4] dark:text-indigo-400 text-xs font-bold px-3 py-1 rounded-full">
+              <Camera className="w-3.5 h-3.5" />
+              <span>Visual Identity Control</span>
+            </div>
+            <h2 className="font-heading font-extrabold text-lg sm:text-xl text-[#111522] dark:text-white">
+              Manage Your Profile Photo & Avatar
+            </h2>
+            <p className="text-xs sm:text-sm text-[#717888] dark:text-[#94a3b8] max-w-2xl">
+              Preview and update your profile pictures instantly. You can upload an image from your phone/computer, paste an image link, or replace the image files directly in your GitHub repository.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleResetProfileImages}
+            className="inline-flex items-center justify-center gap-2 bg-[#f1f3f7] dark:bg-white/10 hover:bg-[#e4e7ee] dark:hover:bg-white/15 text-[#111522] dark:text-white font-bold text-xs px-4 py-3 rounded-2xl transition-colors cursor-pointer shrink-0"
+          >
+            <RotateCcw className="w-4 h-4 text-[#717888] dark:text-[#94a3b8]" />
+            <span>Reset to Original Files</span>
+          </button>
+        </div>
+
+        {/* 2-Column Grid: Avatar on Left, Big Portrait on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          {/* Card 1: Avatar / Logo (5 cols) */}
+          <div className="lg:col-span-5 bg-white dark:bg-[#0f1422] rounded-3xl p-6 border border-[#e3e6ec] dark:border-white/10 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-4 border-b border-[#f1f3f7] dark:border-white/10">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-[#3946f4]/10 dark:bg-indigo-500/20 text-[#3946f4] dark:text-indigo-400 flex items-center justify-center">
+                  <User className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-extrabold text-sm sm:text-base text-[#111522] dark:text-white">
+                    Avatar & Logo
+                  </h3>
+                  <p className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">
+                    Navbar, Notification Drawer, Mobile Dock
+                  </p>
+                </div>
+              </div>
+
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+                public/logo.png
+              </span>
+            </div>
+
+            {/* Live Visual Preview */}
+            <div className="p-4 rounded-2xl bg-[#fafbfc] dark:bg-[#070a12] border border-[#e3e6ec] dark:border-white/5 flex flex-col items-center justify-center gap-3">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-[#2998d5] via-[#3b82f6] to-[#7c3aed] shadow-lg">
+                  <img
+                    src={avatarUrl}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_AVATAR;
+                    }}
+                    alt="Abdullah Forhad - Avatar Preview"
+                    className="w-full h-full rounded-full object-cover bg-white"
+                  />
+                </div>
+                <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-emerald-500 border-2 border-white dark:border-[#0f1422] flex items-center justify-center">
+                  <Check className="w-3.5 h-3.5 text-white" />
+                </div>
+              </div>
+
+              <div className="text-center">
+                <p className="font-bold text-xs text-[#111522] dark:text-white">
+                  Abdullah Forhad
+                </p>
+                <p className="text-[10px] text-[#717888] dark:text-[#94a3b8] truncate max-w-[200px]">
+                  {avatarUrl === LOGO_IMAGE_PATH ? 'Default: /logo.png' : 'Custom Image Active'}
+                </p>
+              </div>
+            </div>
+
+            {/* Action 1: Upload from device */}
+            <div>
+              <label className="block text-xs font-bold text-[#111522] dark:text-white mb-2">
+                1. Upload New Avatar from Device
+              </label>
+              <label className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-2xl border-2 border-dashed border-[#d1d7e2] dark:border-white/20 hover:border-[#3946f4] dark:hover:border-indigo-400 bg-[#f8fafc] dark:bg-white/5 text-xs font-bold text-[#3946f4] dark:text-indigo-400 hover:bg-[#eef2ff] dark:hover:bg-indigo-500/10 transition-all cursor-pointer">
+                <Upload className="w-4 h-4" />
+                <span>Choose Image (PNG or JPG)</span>
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={handleAvatarFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {/* Action 2: Or Paste Image URL */}
+            <form onSubmit={handleSaveAvatarUrl} className="space-y-2">
+              <label className="block text-xs font-bold text-[#111522] dark:text-white">
+                2. Or Paste Any Direct Image URL
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  placeholder="https://example.com/my-photo.jpg"
+                  value={customAvatarInput}
+                  onChange={(e) => setCustomAvatarInput(e.target.value)}
+                  className="flex-1 bg-[#f8fafc] dark:bg-white/5 border border-[#d1d7e2] dark:border-white/10 rounded-xl px-3 py-2 text-xs text-[#111522] dark:text-white placeholder:text-[#8b92a1] focus:outline-none focus:ring-2 focus:ring-[#3946f4]"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#3946f4] hover:bg-[#2834d6] text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-xs whitespace-nowrap"
+                >
+                  Save URL
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Card 2: Main Hero & About Portrait (7 cols) */}
+          <div className="lg:col-span-7 bg-white dark:bg-[#0f1422] rounded-3xl p-6 border border-[#e3e6ec] dark:border-white/10 shadow-sm space-y-5">
+            <div className="flex items-center justify-between pb-4 border-b border-[#f1f3f7] dark:border-white/10">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                  <ImageIcon className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="font-heading font-extrabold text-sm sm:text-base text-[#111522] dark:text-white">
+                    Main Hero & About Portrait Photo
+                  </h3>
+                  <p className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">
+                    Hero Interactive 3D Card, About Section Big Photo
+                  </p>
+                </div>
+              </div>
+
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-600 dark:text-slate-300">
+                public/2.jpg
+              </span>
+            </div>
+
+            {/* Live Visual Preview of Hero Frame */}
+            <div className="p-4 rounded-2xl bg-[#fafbfc] dark:bg-[#070a12] border border-[#e3e6ec] dark:border-white/5 flex flex-col sm:flex-row items-center gap-5">
+              <div className="w-36 h-48 rounded-2xl overflow-hidden shadow-lg border border-white/20 bg-black shrink-0 relative group">
+                <img
+                  src={portraitUrl}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = FALLBACK_PORTRAIT;
+                  }}
+                  alt="Abdullah Forhad - Portrait Preview"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-2">
+                  <span className="text-[9px] font-bold text-white uppercase tracking-wider">
+                    Hero Card Live
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-xs">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-[#3946f4] dark:text-indigo-300 font-bold text-[11px]">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Interactive Card Photo</span>
+                </div>
+                <h4 className="font-bold text-sm text-[#111522] dark:text-white">
+                  Abdullah Forhad Portrait
+                </h4>
+                <p className="text-[#717888] dark:text-[#94a3b8] text-[11px] leading-relaxed">
+                  Recommended format: Portrait aspect ratio (3:4 or 4:5), high resolution (e.g. 800×1000px or higher) in JPG or PNG format.
+                </p>
+                <p className="text-[10px] font-mono text-[#8b92a1] dark:text-[#64748b]">
+                  Current Source: {portraitUrl === BIG_IMAGE_PATH ? 'public/2.jpg' : 'Custom Image'}
+                </p>
+              </div>
+            </div>
+
+            {/* Action 1: Upload from device */}
+            <div>
+              <label className="block text-xs font-bold text-[#111522] dark:text-white mb-2">
+                1. Upload New Portrait Photo from Device
+              </label>
+              <label className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-2xl border-2 border-dashed border-[#d1d7e2] dark:border-white/20 hover:border-[#3946f4] dark:hover:border-indigo-400 bg-[#f8fafc] dark:bg-white/5 text-xs font-bold text-[#3946f4] dark:text-indigo-400 hover:bg-[#eef2ff] dark:hover:bg-indigo-500/10 transition-all cursor-pointer">
+                <Upload className="w-4 h-4" />
+                <span>Choose Portrait Photo (JPG or PNG)</span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handlePortraitFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
+            {/* Action 2: Or Paste Image URL */}
+            <form onSubmit={handleSavePortraitUrl} className="space-y-2">
+              <label className="block text-xs font-bold text-[#111522] dark:text-white">
+                2. Or Paste Any Direct Image URL
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="url"
+                  placeholder="https://example.com/portrait.jpg"
+                  value={customPortraitInput}
+                  onChange={(e) => setCustomPortraitInput(e.target.value)}
+                  className="flex-1 bg-[#f8fafc] dark:bg-white/5 border border-[#d1d7e2] dark:border-white/10 rounded-xl px-3 py-2 text-xs text-[#111522] dark:text-white placeholder:text-[#8b92a1] focus:outline-none focus:ring-2 focus:ring-[#3946f4]"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#3946f4] hover:bg-[#2834d6] text-white font-bold text-xs px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-xs whitespace-nowrap"
+                >
+                  Save URL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Card 3: Permanent GitHub Replacement Guide */}
+        <div className="bg-white dark:bg-[#0f1422] rounded-3xl p-6 sm:p-7 border border-[#e3e6ec] dark:border-white/10 shadow-sm space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-[#f1f3f7] dark:border-white/10">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+              <FileText className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="font-heading font-extrabold text-sm sm:text-base text-[#111522] dark:text-white">
+                Permanent Replacement via GitHub Repository
+              </h3>
+              <p className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">
+                How to permanently replace the files in your GitHub repository (<code className="font-mono text-indigo-500">forhad2008/profile</code>)
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-2xl bg-[#fafbfc] dark:bg-white/5 border border-[#e3e6ec] dark:border-white/5 space-y-1.5">
+              <span className="w-6 h-6 rounded-full bg-[#3946f4] text-white font-bold text-xs flex items-center justify-center">
+                1
+              </span>
+              <h4 className="font-bold text-[#111522] dark:text-white text-sm">
+                Open GitHub Repo
+              </h4>
+              <p className="text-[#717888] dark:text-[#94a3b8] leading-relaxed">
+                Go to your repository <code className="bg-black/10 dark:bg-white/10 px-1 py-0.5 rounded font-mono">forhad2008/profile</code> and open the <code className="font-bold text-[#3946f4]">public/</code> directory.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-[#fafbfc] dark:bg-white/5 border border-[#e3e6ec] dark:border-white/5 space-y-1.5">
+              <span className="w-6 h-6 rounded-full bg-[#3946f4] text-white font-bold text-xs flex items-center justify-center">
+                2
+              </span>
+              <h4 className="font-bold text-[#111522] dark:text-white text-sm">
+                Upload New Files
+              </h4>
+              <p className="text-[#717888] dark:text-[#94a3b8] leading-relaxed">
+                Click <strong>Add file → Upload files</strong>. Make sure your files have these exact names:
+                <br />
+                • Avatar/Logo: <code className="font-mono font-bold text-indigo-500">logo.png</code>
+                <br />
+                • Hero Portrait: <code className="font-mono font-bold text-indigo-500">2.jpg</code>
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-[#fafbfc] dark:bg-white/5 border border-[#e3e6ec] dark:border-white/5 space-y-1.5">
+              <span className="w-6 h-6 rounded-full bg-[#3946f4] text-white font-bold text-xs flex items-center justify-center">
+                3
+              </span>
+              <h4 className="font-bold text-[#111522] dark:text-white text-sm">
+                Commit & Auto-Deploy
+              </h4>
+              <p className="text-[#717888] dark:text-[#94a3b8] leading-relaxed">
+                Click <strong>Commit changes</strong>. Your GitHub Actions workflow automatically rebuilds and deploys the new photos directly to your live portfolio!
+              </p>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">
+              Whenever you update files in GitHub, use the <strong>GitHub sync</strong> button in Google AI Studio to sync changes both ways.
+            </p>
+
+            <a
+              href="https://github.com/forhad2008/profile/tree/main/public"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3946f4] dark:text-indigo-400 hover:underline"
+            >
+              <span>Go to public/ in your GitHub Repo</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        </div>
+
+      </div>
+    )}
 
       </div>
     </div>
   );
 };
+
