@@ -131,10 +131,10 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             {/* Title & Tagline overlay */}
             <div className="absolute bottom-4 left-5 right-5 sm:bottom-6 sm:left-7 sm:right-7 text-white pointer-events-none">
               <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-                {project.title}
+                {currentProduct ? currentProduct.name : project.title}
               </h2>
               <p className="text-xs sm:text-sm text-white/80 mt-0.5 max-w-xl">
-                {currentProduct ? `${currentProduct.caption} — ${currentProduct.description}` : project.tagline}
+                {currentProduct ? currentProduct.description : project.tagline}
               </p>
             </div>
           </div>
