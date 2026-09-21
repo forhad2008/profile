@@ -579,36 +579,43 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                 </span>
               </div>
 
-              {/* Mock card preview */}
-              <div className="rounded-2xl p-4 bg-[#fafbfc] dark:bg-white/5 border border-[#3946f4]/30 dark:border-indigo-500/30 shadow-xs relative">
-                <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#3946f4] ring-4 ring-[#3946f4]/20" />
-
-                <div className="flex items-center gap-2 mb-2 pr-4">
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700/50">
+              {/* Mock card preview - Compact small height */}
+              <div className="rounded-xl p-3 bg-white dark:bg-[#121626] border border-[#3946f4]/35 dark:border-indigo-500/35 shadow-xs relative text-left">
+                <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+                  <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700/50">
                     <Sparkles className="w-3 h-3 text-amber-500" />
                     <span>{category.replace('_', ' ').toUpperCase()}</span>
                   </span>
 
                   {offerDiscount && (
-                    <span className="text-[10px] font-extrabold bg-amber-500 text-white px-2 py-0.5 rounded-full">
+                    <span className="text-[9px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white px-1.5 py-0.5 rounded-md shadow-2xs">
                       {offerDiscount}
                     </span>
                   )}
 
-                  <span className="text-[10px] text-[#8b92a1] dark:text-[#64748b] ml-auto font-medium">
-                    Just now
-                  </span>
+                  {isPinned && (
+                    <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-1.5 py-0.5 rounded-md">
+                      Pinned
+                    </span>
+                  )}
+
+                  <div className="ml-auto flex items-center gap-1.5">
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                      Just now
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#3946f4] ring-2 ring-[#3946f4]/20 animate-pulse" />
+                  </div>
                 </div>
 
-                <h4 className="font-heading font-bold text-sm text-[#111522] dark:text-white leading-snug">
+                <h4 className="font-heading font-bold text-xs sm:text-[13px] text-[#111522] dark:text-white leading-snug">
                   {title || 'Your Notification Title Will Appear Here'}
                 </h4>
-                <p className="mt-1 text-xs text-[#5f687a] dark:text-[#94a3b8] leading-relaxed">
+                <p className="mt-1 text-[11px] text-[#5f687a] dark:text-[#94a3b8] leading-relaxed">
                   {message || 'Type your message in the form on the left to see how it looks to your visitors.'}
                 </p>
 
                 {imageUrl && (
-                  <div className="mt-2.5 rounded-xl overflow-hidden aspect-[16/9] border border-[#e3e6ec] dark:border-white/10 relative">
+                  <div className="mt-2 h-16 rounded-lg overflow-hidden border border-[#e3e6ec] dark:border-white/10 relative">
                     <img
                       src={imageUrl}
                       alt="Preview"
@@ -617,25 +624,29 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
                   </div>
                 )}
 
-                {offerCode && (
-                  <div className="mt-2.5 flex items-center gap-2 bg-[#fffbeb] dark:bg-amber-950/30 p-2 rounded-xl border border-amber-200 dark:border-amber-800/40 text-xs">
-                    <span className="text-[10px] uppercase font-bold text-amber-800 dark:text-amber-300">Promo Code:</span>
-                    <code className="font-mono-tech text-xs font-bold text-amber-950 dark:text-amber-200 bg-white dark:bg-black/30 px-2 py-0.5 rounded-md border border-amber-300 dark:border-amber-700/50">
-                      {offerCode}
-                    </code>
-                  </div>
-                )}
-
-                <div className="mt-3 pt-2.5 border-t border-[#e3e6ec] dark:border-white/10 flex items-center justify-between">
-                  {linkUrl ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3946f4] dark:text-indigo-400">
-                      <span>{linkLabel || 'Visit Link ↗'}</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </span>
+                <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-white/[0.08] flex items-center justify-between gap-2">
+                  {offerCode ? (
+                    <div className="flex items-center gap-1.5 bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/40 rounded-lg px-2 py-0.5">
+                      <span className="text-[9px] font-bold uppercase text-amber-800 dark:text-amber-300">Code:</span>
+                      <code className="font-mono text-[10px] font-bold text-amber-950 dark:text-amber-200">
+                        {offerCode}
+                      </code>
+                    </div>
                   ) : (
-                    <span className="text-[11px] text-[#8b92a1] dark:text-[#64748b]">Abdullah Forhad Feed</span>
+                    <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">
+                      Abdullah Forhad
+                    </span>
                   )}
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">● Active</span>
+
+                  <div className="flex items-center gap-2">
+                    {linkUrl ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg bg-[#3946f4] text-white">
+                        <span>{linkLabel || 'Visit Link ↗'}</span>
+                        <ExternalLink className="w-2.5 h-2.5 opacity-80" />
+                      </span>
+                    ) : null}
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">● Active</span>
+                  </div>
                 </div>
               </div>
 
@@ -754,7 +765,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({ onShow
             {notifications.map((item) => (
               <div
                 key={item.id}
-                className={`p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                className={`p-3 sm:p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                   item.isActive
                     ? 'bg-[#fafbfc] dark:bg-white/5 border-[#e3e6ec] dark:border-white/10'
                     : 'bg-slate-100/60 dark:bg-white/5 border-dashed border-slate-300 dark:border-white/10 opacity-60'

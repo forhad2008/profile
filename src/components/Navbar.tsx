@@ -13,11 +13,13 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) => {
-  const { unreadCount, isDrawerOpen, setIsDrawerOpen } = useNotifications();
+  const { unreadCount, isDrawerOpen, setIsDrawerOpen, notifications } = useNotifications();
   const { theme, toggleTheme } = useTheme();
   const { avatarUrl } = useProfile();
 
   const [greeting, setGreeting] = useState('Good Day,');
+
+  const activeCount = notifications.filter(n => n.isActive).length;
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -121,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
             )}
           </button>
 
-          {/* Notification Bell with red dot / counter matching mobile image */}
+          {/* Notification Bell with smart count badge */}
           <button
             id="notification-bell-btn"
             onClick={() => setIsDrawerOpen(!isDrawerOpen)}
@@ -131,14 +133,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenContact, onExploreWork }) 
                 ? 'bg-[#3946f4] text-white border-[#3946f4] shadow-md shadow-[#3946f4]/30'
                 : 'bg-white dark:bg-white/10 text-[#111522] dark:text-white border-[#e3e6ec] dark:border-white/15 hover:border-[#3946f4]/50'
             }`}
-            title="Open Notifications, Offers & Links"
+            title={`Notifications (${activeCount} total, ${unreadCount} unread)`}
           >
             <Bell className="w-5 h-5" />
             
-            {/* Red unread indicator dot like in mobile image */}
-            {unreadCount > 0 && (
-              <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white dark:ring-[#0a0d16] animate-pulse" />
-            )}
+            {/* Smart counter badge - deep red styling matching user design */}
+            {unreadCount > 0 ? (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-[20px] px-1 rounded-full bg-[#b91c1c] dark:bg-[#c51b24] text-white text-[10px] font-black flex items-center justify-center ring-2 ring-white dark:ring-[#0a0d16] shadow-md shadow-[#991b1b]/50 animate-pulse">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            ) : activeCount > 0 ? (
+              <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[#3946f4] text-white text-[9px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-[#0a0d16]">
+                {activeCount > 9 ? '9+' : activeCount}
+              </span>
+            ) : null}
           </button>
 
           {/* Let's Talk CTA */}

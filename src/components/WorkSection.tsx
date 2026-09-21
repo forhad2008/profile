@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { PORTFOLIO_PROJECTS, CAPABILITIES } from '../data/portfolioData';
 import { Project, ProjectCategory } from '../types';
 import { ProjectModal } from './ProjectModal';
+import { ProductPreviewSystem } from './ProductPreviewSystem';
 import { 
   Search, Sparkles, ArrowRight, Heart, Globe, 
-  Palette, PenTool, Type, Code2, Bot, SlidersHorizontal, ArrowUpRight, Camera, Calendar
+  Palette, PenTool, Type, Code2, Bot, SlidersHorizontal, ArrowUpRight, Camera, Calendar, Layers
 } from 'lucide-react';
 
 interface WorkSectionProps {
@@ -265,6 +266,11 @@ export const WorkSection: React.FC<WorkSectionProps> = ({ onShowToast, onSelectC
             })}
           </div>
         )}
+
+        {/* 1.webp to 8.webp Product Preview Imaging System */}
+        <div className="pt-6 sm:pt-10">
+          <ProductPreviewSystem onShowToast={onShowToast} />
+        </div>
 
         {/* Popular Categories / Capabilities Section - Styled like the screenshot's lower 4 cards */}
         <div className="pt-6 space-y-4">

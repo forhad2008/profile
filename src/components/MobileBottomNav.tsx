@@ -9,8 +9,10 @@ interface MobileBottomNavProps {
 }
 
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onNavClick, onOpenQuickContact }) => {
-  const { unreadCount, isDrawerOpen, setIsDrawerOpen } = useNotifications();
+  const { unreadCount, isDrawerOpen, setIsDrawerOpen, notifications } = useNotifications();
   const { avatarUrl } = useProfile();
+
+  const activeCount = notifications.filter(n => n.isActive).length;
 
   return (
     <div className="fixed bottom-3 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-md bg-[#0f1422]/90 dark:bg-[#0b0f19]/95 text-white backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl px-3 py-2 z-40 md:hidden flex items-center justify-between">
@@ -43,18 +45,25 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onNavClick, on
         <Plus className="w-6 h-6 stroke-[2.5]" />
       </button>
 
-      {/* Saved / Notifications Bell with unread dot */}
+      {/* Saved / Notifications Bell with count badge */}
       <button
         onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-        className="relative flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-2xl text-white/60 hover:text-white font-medium text-[10px] transition-colors"
+        className="relative flex flex-col items-center justify-center gap-1 py-1 px-3 rounded-2xl text-white/60 hover:text-white font-medium text-[10px] transition-colors cursor-pointer"
+        title={`Notifications (${activeCount} total, ${unreadCount} unread)`}
       >
         <div className="relative">
           <Bell className="w-5 h-5" />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-[#0f1422] animate-pulse" />
-          )}
+          {unreadCount > 0 ? (
+            <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#b91c1c] text-white font-black text-[9px] rounded-full ring-2 ring-[#0f1422] shadow-sm shadow-[#991b1b]/50 flex items-center justify-center animate-pulse">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          ) : activeCount > 0 ? (
+            <span className="absolute -top-1.5 -right-2 min-w-[16px] h-[16px] px-0.5 bg-[#3946f4] text-white font-bold text-[9px] rounded-full ring-2 ring-[#0f1422] flex items-center justify-center">
+              {activeCount > 9 ? '9+' : activeCount}
+            </span>
+          ) : null}
         </div>
-        <span>Offers</span>
+        <span>Alerts</span>
       </button>
 
       {/* Profile / About with real avatar */}

@@ -1,6 +1,19 @@
-import { NotificationItem, Project, Capability } from '../types';
+import { NotificationItem, Project, Capability, ProductPreviewItem } from '../types';
 
 export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'launch-product-preview-system',
+    title: 'New: Abdullah Psychotic Product Preview System (1.webp — 8.webp)',
+    message: 'Explore the newly adjusted product preview imaging system featuring products 1.webp through 8.webp with zoom inspection, technical specifications, and live collection archive.',
+    category: 'project_launch',
+    imageUrl: '/1.webp',
+    linkUrl: '#product-preview-system',
+    linkLabel: 'Open Product Previewer ↗',
+    createdAt: 'Just updated',
+    isRead: false,
+    isActive: true,
+    isPinned: true,
+  },
   {
     id: 'offer-whatsapp-1',
     title: 'Special Offer: 30% Off Brand Identity & Web Development',
@@ -34,9 +47,9 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
     title: 'Connect & Travel Stories on Facebook',
     message: 'Explore my journey, creative behind-the-scenes, and travel adventures. Follow and connect with me directly on my Facebook profile.',
     category: 'website_link',
+    imageUrl: 'https://raw.githubusercontent.com/forhad2008/profile/main/public/2.jpg',
     linkUrl: 'https://www.facebook.com/profile.php?id=61580779565120',
     linkLabel: 'View Facebook Profile ↗',
-    imageUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&h=600&q=80',
     createdAt: 'Featured',
     isRead: false,
     isActive: true,
@@ -44,16 +57,158 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   }
 ];
 
+export const PRODUCT_PREVIEW_COLLECTION: ProductPreviewItem[] = [
+  {
+    id: 'product-01',
+    number: '01',
+    name: 'Fashion Signature',
+    caption: 'Abdullah Psychotic Runway',
+    image: '/1.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/1.webp',
+    tag: 'Signature Piece',
+    category: 'Fashion',
+    description: 'Sculptural architectural silhouette balancing dark aesthetic tension with modern minimalist discipline.',
+    details: {
+      material: '100% Heavyweight Japanese Cotton',
+      style: 'Monochrome High-Contrast',
+      edition: 'Vol. 1 Limited'
+    }
+  },
+  {
+    id: 'product-02',
+    number: '02',
+    name: 'Lifestyle Edition',
+    caption: 'Modern Living & Essentials',
+    image: '/2.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/2.webp',
+    tag: 'Lifestyle Art',
+    category: 'Lifestyle',
+    description: 'Contemporary lifestyle accessories engineered with brutalist precision and tactile luxury touch.',
+    details: {
+      material: 'Anodized Matte Alloy & Leather',
+      style: 'Minimal Industrial',
+      edition: 'Core Archive'
+    }
+  },
+  {
+    id: 'product-03',
+    number: '03',
+    name: 'Psycho Notes',
+    caption: 'Creative Manifesto Journal',
+    image: '/3.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/3.webp',
+    tag: 'Art & Concept',
+    category: 'Art & Concept',
+    description: 'Raw conceptual sketches, typography manifestos, and midnight design studies bound in obsidian covers.',
+    details: {
+      material: 'Acid-Free Archival Paper 300gsm',
+      style: 'Editorial Grids',
+      edition: 'Author Series'
+    }
+  },
+  {
+    id: 'product-04',
+    number: '04',
+    name: 'Fashion Bespoke',
+    caption: 'Tailored Contrast Cut',
+    image: '/4.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/4.webp',
+    tag: 'Bespoke Cut',
+    category: 'Fashion',
+    description: 'Sharp tailored angles with surgical white topstitching against deep onyx fabric.',
+    details: {
+      material: 'Worsted Wool & Raw Silk Blend',
+      style: 'Structured Angular',
+      edition: 'Fall / Winter 26'
+    }
+  },
+  {
+    id: 'product-05',
+    number: '05',
+    name: 'Clothes Heavyweight',
+    caption: 'Subculture Everyday Apparel',
+    image: '/5.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/5.webp',
+    tag: 'Daily Wear',
+    category: 'Apparel',
+    description: 'Heavyweight oversized garment crafted with reinforced flatlock seams and understated tonal typography.',
+    details: {
+      material: '450gsm Loopback French Terry',
+      style: 'Drop-Shoulder Boxy',
+      edition: 'Psychotic Standard'
+    }
+  },
+  {
+    id: 'product-06',
+    number: '06',
+    name: 'Streetwear Tactical',
+    caption: 'Industrial Urban Subculture',
+    image: '/6.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/6.webp',
+    tag: 'Street Culture',
+    category: 'Streetwear',
+    description: 'Raw urban subculture silhouette integrating functional hardware, utility rings, and dark aesthetics.',
+    details: {
+      material: 'Water-Repellent Cordura & Twill',
+      style: 'Modular Utility',
+      edition: 'Night Ops 06'
+    }
+  },
+  {
+    id: 'product-07',
+    number: '07',
+    name: 'Luxury Perfume',
+    caption: 'Smoked Amber & Dark Woods',
+    image: '/7.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/7.webp',
+    tag: 'Olfactory Art',
+    category: 'Fragrance',
+    description: 'Intoxicating bespoke extrait de parfum blending birch tar, dark amber resin, and crisp metallic saffron.',
+    details: {
+      material: 'Pure Parfum Extrait 30% Concentrate',
+      style: 'Smoky Amber & Cedar',
+      edition: 'Numbered Flacon'
+    }
+  },
+  {
+    id: 'product-08',
+    number: '08',
+    name: 'Hoodies Thermal',
+    caption: 'Obsidian Oversized Fleece',
+    image: '/8.webp',
+    fallbackImage: 'https://raw.githubusercontent.com/forhad2008/Abdullah-psychotic-collections/main/8.webp',
+    tag: 'Winter Signature',
+    category: 'Streetwear',
+    description: 'Double-layered oversized hoodie constructed with thermal brushed interior and deep crossover hood.',
+    details: {
+      material: '500gsm Organic Combed Cotton Fleece',
+      style: 'Ultra-Heavy Boxy Fit',
+      edition: 'Winter Capsule'
+    }
+  }
+];
+
 export const PORTFOLIO_PROJECTS: Project[] = [
   {
     id: 'abdullah-psychotic',
     title: 'Abdullah Psychotic',
-    tagline: 'A dark visual system built around identity, discipline and high-contrast typography.',
+    tagline: 'A dark visual system built around identity, discipline, high-contrast typography, and 1.webp-8.webp product line.',
     category: 'branding',
     categoryLabel: 'Brand Identity & Web',
-    imageUrl: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1800&q=88',
+    imageUrl: '/1.webp',
+    galleryImages: [
+      '/1.webp',
+      '/2.webp',
+      '/3.webp',
+      '/4.webp',
+      '/5.webp',
+      '/6.webp',
+      '/7.webp',
+      '/8.webp'
+    ],
+    productItems: PRODUCT_PREVIEW_COLLECTION,
     featured: true,
-    searchTags: ['branding', 'dark mode', 'identity', 'fashion', 'web design', 'psychotic', 'editorial'],
+    searchTags: ['branding', 'dark mode', 'identity', 'fashion', 'web design', 'psychotic', 'editorial', 'products', '1.webp', '8.webp'],
     description: 'A comprehensive brand identity and digital experience crafted for a forward-thinking streetwear and visual art initiative.',
     fullCaseStudy: {
       clientOrContext: 'Independent Brand & Creative Lab',
@@ -63,8 +218,8 @@ export const PORTFOLIO_PROJECTS: Project[] = [
       challenge: 'Creating a rebellious yet surgically refined aesthetic that balances raw editorial tension with fluid web responsiveness.',
       solution: 'Developed custom display letterforms, an austere monochrome color palette with surgical cobalt blue highlights, and a micro-animated portfolio experience.',
       metrics: '350+ brand assets generated, 99 Lighthouse performance score.',
-      demoUrl: 'https://github.com/forhad-psychotic',
-      githubUrl: 'https://github.com/forhad-psychotic',
+      demoUrl: 'https://forhad2008.github.io/Abdullah-psychotic-collections/',
+      githubUrl: 'https://github.com/forhad2008/Abdullah-psychotic-collections',
     }
   },
   {

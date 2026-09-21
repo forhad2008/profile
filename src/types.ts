@@ -18,6 +18,23 @@ export interface NotificationItem {
 
 export type ProjectCategory = 'all' | 'web_ai' | 'branding' | 'graphics' | 'typography';
 
+export interface ProductPreviewItem {
+  id: string;
+  name: string;
+  caption: string;
+  image: string;
+  fallbackImage: string;
+  number: string;
+  tag: string;
+  category: string;
+  description?: string;
+  details?: {
+    material?: string;
+    style?: string;
+    edition?: string;
+  };
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -25,6 +42,8 @@ export interface Project {
   category: ProjectCategory;
   categoryLabel: string;
   imageUrl: string;
+  galleryImages?: string[];
+  productItems?: ProductPreviewItem[];
   featured?: boolean;
   searchTags: string[];
   description: string;

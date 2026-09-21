@@ -39,7 +39,24 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          // Merge missing defaults such as newly introduced notifications
+          const existingIds = new Set(parsed.map((p: NotificationItem) => p.id));
+          const missingDefaults = INITIAL_NOTIFICATIONS.filter(d => !existingIds.has(d.id));
+          const combined = [...missingDefaults, ...parsed];
+
+          // Clean any legacy unsplash URLs from items and ensure Facebook notification has its image
+          const cleaned = combined.map((item: NotificationItem) => {
+            if (item.id === 'social-facebook-travel' && !item.imageUrl) {
+              const defaultFb = INITIAL_NOTIFICATIONS.find(n => n.id === 'social-facebook-travel');
+              return { ...item, imageUrl: defaultFb?.imageUrl || 'https://raw.githubusercontent.com/forhad2008/profile/main/public/2.jpg' };
+            }
+            if (item.imageUrl && item.imageUrl.includes('unsplash.com')) {
+              const { imageUrl, ...rest } = item;
+              return rest;
+            }
+            return item;
+          });
+          return cleaned;
         }
       }
     } catch {
